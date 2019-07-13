@@ -1,9 +1,12 @@
 import fs from 'fs';
+import path from 'path';
 import _ from 'lodash';
 
 const generateDiff = (firstConfig, secondConfig) => {
-  const firstConfigInner = fs.readFileSync(firstConfig, 'utf8');
-  const secondConfigInner = fs.readFileSync(secondConfig, 'utf8');
+  const firstConfigPath = path.resolve(firstConfig);
+  const secondConfigPath = path.resolve(secondConfig);
+  const firstConfigInner = fs.readFileSync(firstConfigPath, 'utf8');
+  const secondConfigInner = fs.readFileSync(secondConfigPath, 'utf8');
   const firstConfigObject = JSON.parse(firstConfigInner);
   const secondConfigObject = JSON.parse(secondConfigInner);
   const firstConfigEntries = Object.entries(firstConfigObject);
