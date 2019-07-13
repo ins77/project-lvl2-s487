@@ -5,4 +5,4 @@
 
 # Запуск gendiff
 
-<!-- <a href="https://asciinema.org/a/244605"><img src="https://asciinema.org/a/244605.png" width="500"/></a> -->
+<a href="https://asciinema.org/a/XR8eDnFEs3MsLldEh5QXnWMcD"><img src="https://asciinema.org/a/XR8eDnFEs3MsLldEh5QXnWMcD.png" width="500"/></a>
