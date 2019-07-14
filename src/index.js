@@ -2,37 +2,47 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 
-const generateDiff = (firstConfig, secondConfig) => {
+const parse = (keys, firstConfig, secondConfig) => {
+  return keys.map((key) => {
+    if (_.has(firstConfig, key) && !_.has(secondConfig, key)) {
+      return { key, status: 'removed' };
+    }
+
+    if (!_.has(firstConfig, key) && _.has(secondConfig, key)) {
+      return { key, status: 'added' };
+    }
+
+    return firstConfig[key] === secondConfig[key]
+      ? { key, status: 'unchanged' }
+      : { key, status: 'changed' };
+  });
+};
+
+const diffsObject = {
+  removed: (key, firstConfig) => [`  - ${key}: ${firstConfig[key]}`],
+  added: (key, firstConfig, secondConfig) => [`  + ${key}: ${secondConfig[key]}`],
+  unchanged: (key, firstConfig, secondConfig) => [`    ${key}: ${secondConfig[key]}`],
+  changed: (key, firstConfig, secondConfig) => [`  + ${key}: ${secondConfig[key]}`, `  - ${key}: ${firstConfig[key]}`],
+};
+
+const render = (trees, firstConfig, secondConfig) => {
+  const diff = trees.reduce((acc, { key, status }) => (
+    [...acc, ...diffsObject[status](key, firstConfig, secondConfig)]
+  ), []);
+
+  return `{\n${diff.join('\n')}\n}`;
+};
+
+export default (firstConfig, secondConfig) => {
   const firstConfigPath = path.resolve(firstConfig);
   const secondConfigPath = path.resolve(secondConfig);
   const firstConfigInner = fs.readFileSync(firstConfigPath, 'utf8');
   const secondConfigInner = fs.readFileSync(secondConfigPath, 'utf8');
   const firstConfigObject = JSON.parse(firstConfigInner);
   const secondConfigObject = JSON.parse(secondConfigInner);
-  const firstConfigEntries = Object.entries(firstConfigObject);
-  const secondConfigEntries = Object.entries(secondConfigObject);
 
-  const diff1 = firstConfigEntries.reduce((acc, [key, value]) => {
-    if (_.has(secondConfigObject, key)) {
-      const secondObjectValue = secondConfigObject[key];
+  const keys = _.union(Object.keys(firstConfigObject), Object.keys(secondConfigObject));
+  const parsedData = parse(keys, firstConfigObject, secondConfigObject);
 
-      return secondObjectValue === value
-        ? [...acc, `  ${key}: ${value}`]
-        : [...acc, `+ ${key}: ${secondObjectValue}`, `- ${key}: ${value}`];
-    }
-
-    return [...acc, `- ${key}: ${value}`];
-  }, []);
-
-  const diff2 = secondConfigEntries.reduce((acc, [key, value]) => (
-    _.has(firstConfigObject, key)
-      ? acc
-      : [...acc, `+ ${key}: ${value}`]
-  ), diff1);
-
-  const result = diff2.map(item => `  ${item}`).join('\n');
-
-  return `{\n${result}\n}`;
+  return render(parsedData, firstConfigObject, secondConfigObject);
 };
-
-export default generateDiff;
