@@ -11,3 +11,13 @@ test('generateDiff | должно возвращать результат сра
 
   expect(actualResult).toEqual(expectedResult);
 });
+
+test('generateDiff | должно возвращать результат сравнения yaml-файлов', () => {
+  const pathToFixtures = '__tests__/__fixtures__';
+  const pathToFile1 = path.join(pathToFixtures, 'before.yml');
+  const pathToFile2 = path.join(pathToFixtures, 'after.yml');
+  const actualResult = generateDiff(pathToFile1, pathToFile2);
+  const expectedResult = fs.readFileSync(`${__dirname}/__fixtures__/diff-result.txt`, 'utf8');
+
+  expect(actualResult).toEqual(expectedResult);
+});

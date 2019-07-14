@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
+import parsers from './parsers';
 
-const parse = (keys, firstConfig, secondConfig) => {
+const parseData = (keys, firstConfig, secondConfig) => {
   return keys.map((key) => {
     if (_.has(firstConfig, key) && !_.has(secondConfig, key)) {
       return { key, status: 'removed' };
@@ -25,7 +26,7 @@ const diffsObject = {
   changed: (key, firstConfig, secondConfig) => [`  + ${key}: ${secondConfig[key]}`, `  - ${key}: ${firstConfig[key]}`],
 };
 
-const render = (trees, firstConfig, secondConfig) => {
+const renderData = (trees, firstConfig, secondConfig) => {
   const diff = trees.reduce((acc, { key, status }) => (
     [...acc, ...diffsObject[status](key, firstConfig, secondConfig)]
   ), []);
@@ -38,11 +39,13 @@ export default (firstConfig, secondConfig) => {
   const secondConfigPath = path.resolve(secondConfig);
   const firstConfigInner = fs.readFileSync(firstConfigPath, 'utf8');
   const secondConfigInner = fs.readFileSync(secondConfigPath, 'utf8');
-  const firstConfigObject = JSON.parse(firstConfigInner);
-  const secondConfigObject = JSON.parse(secondConfigInner);
+  const format = path.extname(firstConfigPath);
+  const parse = parsers[format.slice(1)];
+  const firstConfigObject = parse(firstConfigInner);
+  const secondConfigObject = parse(secondConfigInner);
 
   const keys = _.union(Object.keys(firstConfigObject), Object.keys(secondConfigObject));
-  const parsedData = parse(keys, firstConfigObject, secondConfigObject);
+  const parsedData = parseData(keys, firstConfigObject, secondConfigObject);
 
-  return render(parsedData, firstConfigObject, secondConfigObject);
+  return renderData(parsedData, firstConfigObject, secondConfigObject);
 };
