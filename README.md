@@ -10,3 +10,7 @@
 # Сравнение yaml-файлов
 
 <a href="https://asciinema.org/a/To5Hu5KtJvQGrPPms3xOpyMMQ"><img src="https://asciinema.org/a/To5Hu5KtJvQGrPPms3xOpyMMQ.png" width="500"/></a>
+
+# Сравнение ini-файлов
+
+<a href="https://asciinema.org/a/Z0RnBW46VtgcWBlPC2XF7NuTl"><img src="https://asciinema.org/a/Z0RnBW46VtgcWBlPC2XF7NuTl.png" width="500"/></a>
