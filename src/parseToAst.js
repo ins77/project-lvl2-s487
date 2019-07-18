@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import statuses from './statuses';
 
-const parseToAST = (keys, firstConfig, secondConfig) => {
-  return keys.map((key) => {
+const parseToAST = (keys, firstConfig, secondConfig) => (
+  keys.map((key) => {
     const firstConfigValue = firstConfig[key];
     const secondConfigValue = secondConfig[key];
 
@@ -31,7 +31,7 @@ const parseToAST = (keys, firstConfig, secondConfig) => {
       currentValue: secondConfigValue,
       status: statuses.changed,
     };
-  });
-};
+  })
+);
 
 export default parseToAST;
