@@ -1,6 +1,6 @@
 {
   "name": "hexlet-ins-gendiff",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "second hexlet project",
   "main": "index.js",
   "bin": {
