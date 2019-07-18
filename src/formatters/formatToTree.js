@@ -15,7 +15,7 @@ const stringify = (value, depth) => {
 };
 
 const build = (trees, depth) => {
-  const diff = trees.reduce((acc, tree) => {
+  const diff = trees.map((tree) => {
     const {
       key,
       status,
@@ -25,28 +25,28 @@ const build = (trees, depth) => {
     } = tree;
 
     if (status === 'removed') {
-      return [...acc, `${getTab(depth + 1)}- ${key}: ${stringify(currentValue, depth)}`];
+      return `${getTab(depth + 1)}- ${key}: ${stringify(currentValue, depth)}`;
     }
 
     if (status === 'added') {
-      return [...acc, `${getTab(depth + 1)}+ ${key}: ${stringify(currentValue, depth)}`];
+      return `${getTab(depth + 1)}+ ${key}: ${stringify(currentValue, depth)}`;
     }
 
     if (status === 'changed') {
       const removed = `${getTab(depth + 1)}- ${key}: ${stringify(previousValue, depth)}`;
       const added = `${getTab(depth + 1)}+ ${key}: ${stringify(currentValue, depth)}`;
 
-      return [...acc, removed, added];
+      return [removed, added];
     }
 
-    const value = children !== undefined
-      ? `{\n${build(children, depth + 2)}\n${getTab(depth + 2)}}`
-      : `${stringify(currentValue, depth)}`;
+    const value = children === undefined
+      ? `${stringify(currentValue, depth)}`
+      : `{\n${build(children, depth + 2)}\n${getTab(depth + 2)}}`;
 
-    return [...acc, `${getTab(depth + 1)}  ${key}: ${value}`];
-  }, []);
+    return `${getTab(depth + 1)}  ${key}: ${value}`;
+  });
 
-  return diff.join('\n');
+  return _.flatten(diff).join('\n');
 };
 
 export default trees => `{\n${build(trees, 0)}\n}`;
