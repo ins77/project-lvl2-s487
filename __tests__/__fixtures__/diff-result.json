@@ -1,0 +1,88 @@
+{
+  "common": {
+    "status": "unchanged",
+    "children": {
+      "setting1": {
+        "status": "unchanged",
+        "value": "Value 1"
+      },
+      "setting2": {
+        "status": "removed",
+        "value": "200"
+      },
+      "setting3": {
+        "status": "changed",
+        "value": {
+          "previous": true,
+          "current": {
+            "key": "value"
+          }
+        }
+      },
+      "setting6": {
+        "status": "unchanged",
+        "children": {
+          "key": {
+            "status": "unchanged",
+            "value": "value"
+          },
+          "ops": {
+            "status": "added",
+            "value": "vops"
+          }
+        }
+      },
+      "follow": {
+        "status": "added",
+        "value": false
+      },
+      "setting4": {
+        "status": "added",
+        "value": "blah blah"
+      },
+      "setting5": {
+        "status": "added",
+        "value": {
+          "key5": "value5"
+        }
+      }
+    }
+  },
+  "group1": {
+    "status": "unchanged",
+    "children": {
+      "baz": {
+        "status": "changed",
+        "value": {
+          "previous": "bas",
+          "current": "bars"
+        }
+      },
+      "foo": {
+        "status": "unchanged",
+        "value": "bar"
+      },
+      "nest": {
+        "status": "changed",
+        "value": {
+          "previous": {
+            "key": "value"
+          },
+          "current": "str"
+        }
+      }
+    }
+  },
+  "group2": {
+    "status": "removed",
+    "value": {
+      "abc": "12345"
+    }
+  },
+  "group3": {
+    "status": "added",
+    "value": {
+      "fee": "100500"
+    }
+  }
+}

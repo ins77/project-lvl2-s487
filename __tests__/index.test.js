@@ -26,4 +26,13 @@ describe.each(formats)('genDiff | сравнение двух файлов', (fo
       expect(actualResult).toEqual(expectedResult);
     });
   });
+
+  describe('Если передан формат json', () => {
+    test(`То возвращается результат сравнения ${format}-файлов в формате json`, () => {
+      const actualResult = genDiff(pathToFile1, pathToFile2, 'json');
+      const expectedResult = fs.readFileSync(`${__dirname}/__fixtures__/diff-result.json`, 'utf8');
+
+      expect(actualResult).toEqual(expectedResult);
+    });
+  });
 });

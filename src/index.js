@@ -3,11 +3,12 @@ import path from 'path';
 import _ from 'lodash';
 import parsers from './parsers';
 import parseToAST from './parseToAst';
-import { formatToTree, formatToPlain } from './formatters';
+import { formatToTree, formatToPlain, formatToJSON } from './formatters';
 
 const formatters = {
   tree: formatToTree,
   plain: formatToPlain,
+  json: formatToJSON,
 };
 
 export default (firstConfig, secondConfig, format = 'tree') => {
@@ -20,8 +21,8 @@ export default (firstConfig, secondConfig, format = 'tree') => {
   const firstConfigObject = parseFile(firstConfigInner);
   const secondConfigObject = parseFile(secondConfigInner);
   const keys = _.union(Object.keys(firstConfigObject), Object.keys(secondConfigObject));
-  const parsedData = parseToAST(keys, firstConfigObject, secondConfigObject);
   const formatFn = formatters[format];
+  const ast = parseToAST(keys, firstConfigObject, secondConfigObject);
 
-  return formatFn(parsedData);
+  return formatFn(ast);
 };

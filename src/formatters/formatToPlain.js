@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import statuses from '../statuses';
 
 const getValue = (value) => {
   const resultValue = typeof value === 'string'
@@ -8,6 +9,14 @@ const getValue = (value) => {
   return _.isObject(value)
     ? '[complex value]'
     : resultValue;
+};
+
+const node = {
+  [statuses.removed]: path => `Property '${path}' was removed`,
+  [statuses.added]: (path, currentValue) => `Property '${path}' was added with value: ${currentValue}`,
+  [statuses.changed]: (path, currentValue, previousValue) => (
+    `Property '${path}' was updated. From ${previousValue} to ${currentValue}`
+  ),
 };
 
 export default (trees) => {
@@ -23,16 +32,8 @@ export default (trees) => {
 
       const newPath = `${changesPath}${key}`;
 
-      if (status === 'removed') {
-        return [...iAcc, `Property '${newPath}' was removed`];
-      }
-
-      if (status === 'added') {
-        return [...iAcc, `Property '${newPath}' was added with value: ${getValue(currentValue)}`];
-      }
-
-      if (status === 'changed') {
-        return [...iAcc, `Property '${newPath}' was updated. From ${getValue(previousValue)} to ${getValue(currentValue)}`];
+      if (status !== statuses.unchanged) {
+        return [...iAcc, node[status](newPath, getValue(currentValue), getValue(previousValue))];
       }
 
       return children === undefined

@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import statuses from '../statuses';
 
 const getTab = depth => '  '.repeat(depth);
 
@@ -14,37 +15,28 @@ const stringify = (value, depth) => {
   return `{\n${arr.join('\n')}\n${getTab(depth + 2)}}`;
 };
 
+const node = {
+  [statuses.removed]: (tree, depth) => (
+    `${getTab(depth + 1)}- ${tree.key}: ${stringify(tree.currentValue, depth)}`
+  ),
+  [statuses.added]: (tree, depth) => (
+    `${getTab(depth + 1)}+ ${tree.key}: ${stringify(tree.currentValue, depth)}`
+  ),
+  [statuses.changed]: (tree, depth) => (
+    [
+      `${getTab(depth + 1)}- ${tree.key}: ${stringify(tree.previousValue, depth)}`,
+      `${getTab(depth + 1)}+ ${tree.key}: ${stringify(tree.currentValue, depth)}`,
+    ]
+  ),
+  [statuses.unchanged]: (tree, depth, buildFn) => (
+    tree.children === undefined
+      ? `${getTab(depth + 1)}  ${tree.key}: ${stringify(tree.currentValue, depth)}`
+      : `${getTab(depth + 1)}  ${tree.key}: {\n${buildFn(tree.children, depth + 2)}\n${getTab(depth + 2)}}`
+  ),
+};
+
 const build = (trees, depth) => {
-  const diff = trees.map((tree) => {
-    const {
-      key,
-      status,
-      children,
-      currentValue,
-      previousValue,
-    } = tree;
-
-    if (status === 'removed') {
-      return `${getTab(depth + 1)}- ${key}: ${stringify(currentValue, depth)}`;
-    }
-
-    if (status === 'added') {
-      return `${getTab(depth + 1)}+ ${key}: ${stringify(currentValue, depth)}`;
-    }
-
-    if (status === 'changed') {
-      const removed = `${getTab(depth + 1)}- ${key}: ${stringify(previousValue, depth)}`;
-      const added = `${getTab(depth + 1)}+ ${key}: ${stringify(currentValue, depth)}`;
-
-      return [removed, added];
-    }
-
-    const value = children === undefined
-      ? `${stringify(currentValue, depth)}`
-      : `{\n${build(children, depth + 2)}\n${getTab(depth + 2)}}`;
-
-    return `${getTab(depth + 1)}  ${key}: ${value}`;
-  });
+  const diff = trees.map(tree => node[tree.status](tree, depth, build));
 
   return _.flatten(diff).join('\n');
 };
