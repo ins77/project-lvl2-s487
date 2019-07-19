@@ -1,17 +1,17 @@
 {
   "common": {
-    "status": "unchanged",
+    "type": "nested",
     "children": {
       "setting1": {
-        "status": "unchanged",
+        "type": "unchanged",
         "value": "Value 1"
       },
       "setting2": {
-        "status": "removed",
+        "type": "removed",
         "value": "200"
       },
       "setting3": {
-        "status": "changed",
+        "type": "changed",
         "value": {
           "previous": true,
           "current": {
@@ -20,28 +20,28 @@
         }
       },
       "setting6": {
-        "status": "unchanged",
+        "type": "nested",
         "children": {
           "key": {
-            "status": "unchanged",
+            "type": "unchanged",
             "value": "value"
           },
           "ops": {
-            "status": "added",
+            "type": "added",
             "value": "vops"
           }
         }
       },
       "follow": {
-        "status": "added",
+        "type": "added",
         "value": false
       },
       "setting4": {
-        "status": "added",
+        "type": "added",
         "value": "blah blah"
       },
       "setting5": {
-        "status": "added",
+        "type": "added",
         "value": {
           "key5": "value5"
         }
@@ -49,21 +49,21 @@
     }
   },
   "group1": {
-    "status": "unchanged",
+    "type": "nested",
     "children": {
       "baz": {
-        "status": "changed",
+        "type": "changed",
         "value": {
           "previous": "bas",
           "current": "bars"
         }
       },
       "foo": {
-        "status": "unchanged",
+        "type": "unchanged",
         "value": "bar"
       },
       "nest": {
-        "status": "changed",
+        "type": "changed",
         "value": {
           "previous": {
             "key": "value"
@@ -74,13 +74,13 @@
     }
   },
   "group2": {
-    "status": "removed",
+    "type": "removed",
     "value": {
       "abc": "12345"
     }
   },
   "group3": {
-    "status": "added",
+    "type": "added",
     "value": {
       "fee": "100500"
     }

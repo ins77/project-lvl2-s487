@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import statuses from '../statuses';
+import types from '../types';
 
 const getTab = depth => '  '.repeat(depth);
 
@@ -16,27 +16,28 @@ const stringify = (value, depth) => {
 };
 
 const node = {
-  [statuses.removed]: (tree, depth) => (
+  [types.removed]: (tree, depth) => (
     `${getTab(depth + 1)}- ${tree.key}: ${stringify(tree.currentValue, depth)}`
   ),
-  [statuses.added]: (tree, depth) => (
+  [types.added]: (tree, depth) => (
     `${getTab(depth + 1)}+ ${tree.key}: ${stringify(tree.currentValue, depth)}`
   ),
-  [statuses.changed]: (tree, depth) => (
+  [types.changed]: (tree, depth) => (
     [
       `${getTab(depth + 1)}- ${tree.key}: ${stringify(tree.previousValue, depth)}`,
       `${getTab(depth + 1)}+ ${tree.key}: ${stringify(tree.currentValue, depth)}`,
     ]
   ),
-  [statuses.unchanged]: (tree, depth, buildFn) => (
-    tree.children === undefined
-      ? `${getTab(depth + 1)}  ${tree.key}: ${stringify(tree.currentValue, depth)}`
-      : `${getTab(depth + 1)}  ${tree.key}: {\n${buildFn(tree.children, depth + 2)}\n${getTab(depth + 2)}}`
+  [types.unchanged]: (tree, depth) => (
+    `${getTab(depth + 1)}  ${tree.key}: ${stringify(tree.currentValue, depth)}`
+  ),
+  [types.nested]: (tree, depth, buildFn) => (
+    `${getTab(depth + 1)}  ${tree.key}: {\n${buildFn(tree.children, depth + 2)}\n${getTab(depth + 2)}}`
   ),
 };
 
 const build = (trees, depth) => {
-  const diff = trees.map(tree => node[tree.status](tree, depth, build));
+  const diff = trees.map(tree => node[tree.type](tree, depth, build));
 
   return _.flatten(diff).join('\n');
 };

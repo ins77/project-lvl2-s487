@@ -1,7 +1,7 @@
-import statuses from '../statuses';
+import types from '../types';
 
-const getNodeValue = ({ status, previousValue, currentValue }) => (
-  status === statuses.changed
+const getNodeValue = ({ type, previousValue, currentValue }) => (
+  type === types.changed
     ? { previous: previousValue, current: currentValue }
     : currentValue
 );
@@ -9,13 +9,13 @@ const getNodeValue = ({ status, previousValue, currentValue }) => (
 const getNode = (tree, buildFn) => {
   const {
     key,
-    status,
+    type,
     children,
   } = tree;
 
-  return status === statuses.unchanged && children !== undefined
-    ? { [key]: { status, children: buildFn(children) } }
-    : { [key]: { status, value: getNodeValue(tree) } };
+  return type === types.nested
+    ? { [key]: { type, children: buildFn(children) } }
+    : { [key]: { type, value: getNodeValue(tree) } };
 };
 
 const build = trees => (

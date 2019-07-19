@@ -3,4 +3,5 @@ export default {
   added: 'added',
   changed: 'changed',
   unchanged: 'unchanged',
+  nested: 'nested',
 };
