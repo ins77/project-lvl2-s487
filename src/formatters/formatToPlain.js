@@ -27,7 +27,6 @@ export default (trees) => {
   const diff = trees.reduce((acc, tree) => {
     const iter = (iTree, changesPath, iAcc) => {
       const { key, type } = iTree;
-
       const path = `${changesPath}${key}`;
 
       return node[type](iAcc, path, iTree, iter);

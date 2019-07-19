@@ -20,9 +20,8 @@ export default (firstConfig, secondConfig, format = 'tree') => {
   const parseFile = parsers[extension];
   const firstConfigObject = parseFile(firstConfigInner);
   const secondConfigObject = parseFile(secondConfigInner);
-  const keys = _.union(Object.keys(firstConfigObject), Object.keys(secondConfigObject));
   const formatFn = formatters[format];
-  const ast = parseToAST(keys, firstConfigObject, secondConfigObject);
+  const ast = parseToAST(firstConfigObject, secondConfigObject);
 
   return formatFn(ast);
 };
