@@ -2,13 +2,13 @@ import _ from 'lodash';
 import types from '../types';
 
 const getValue = (value) => {
-  const resultValue = typeof value === 'string'
+  if (_.isObject(value)) {
+    return '[complex value]';
+  }
+
+  return typeof value === 'string'
     ? `'${value}'`
     : value;
-
-  return _.isObject(value)
-    ? '[complex value]'
-    : resultValue;
 };
 
 const node = {
