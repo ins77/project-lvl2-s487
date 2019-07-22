@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import _ from 'lodash';
 import parsers from './parsers';
 import parseToAST from './parseToAst';
 import { formatToTree, formatToPlain, formatToJSON } from './formatters';
