@@ -11,7 +11,7 @@ const getValue = (value) => {
     : value;
 };
 
-const node = {
+const statuses = {
   [types.removed]: (acc, path) => [...acc, `Property '${path}' was removed`],
   [types.added]: (acc, path, { currentValue }) => [...acc, `Property '${path}' was added with value: ${getValue(currentValue)}`],
   [types.changed]: (acc, path, { currentValue, previousValue }) => (
@@ -29,7 +29,7 @@ export default (trees) => {
       const { key, type } = iTree;
       const path = `${changesPath}${key}`;
 
-      return node[type](iAcc, path, iTree, iter);
+      return statuses[type](iAcc, path, iTree, iter);
     };
 
     return [...acc, iter(tree, '', [])];

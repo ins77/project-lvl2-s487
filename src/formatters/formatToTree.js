@@ -15,7 +15,7 @@ const stringify = (value, depth) => {
   return `{\n${arr.join('\n')}\n${getTab(depth + 2)}}`;
 };
 
-const node = {
+const nodes = {
   [types.removed]: (tree, depth) => (
     `${getTab(depth + 1)}- ${tree.key}: ${stringify(tree.currentValue, depth)}`
   ),
@@ -37,7 +37,7 @@ const node = {
 };
 
 const build = (trees, depth) => {
-  const diff = trees.map(tree => node[tree.type](tree, depth, build));
+  const diff = trees.map(tree => nodes[tree.type](tree, depth, build));
 
   return _.flatten(diff).join('\n');
 };
