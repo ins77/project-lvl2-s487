@@ -4,21 +4,21 @@ import types from './types';
 const propertyActions = [
   {
     check: (key, firstConfig, secondConfig) => !_.has(secondConfig, key),
-    process: (key, firstConfig) => ({
+    getValue: (key, firstConfig) => ({
       type: types.removed,
       value: firstConfig[key],
     }),
   },
   {
     check: (key, firstConfig) => !_.has(firstConfig, key),
-    process: (key, firstConfig, secondConfig) => ({
+    getValue: (key, firstConfig, secondConfig) => ({
       type: types.added,
       value: secondConfig[key],
     }),
   },
   {
     check: (key, firstConfig, secondConfig) => firstConfig[key] === secondConfig[key],
-    process: (key, firstConfig, secondConfig) => ({
+    getValue: (key, firstConfig, secondConfig) => ({
       type: types.unchanged,
       value: secondConfig[key],
     }),
@@ -27,7 +27,7 @@ const propertyActions = [
     check: (key, firstConfig, secondConfig) => (
       _.isObject(firstConfig[key]) && _.isObject(secondConfig[key])
     ),
-    process: (key, firstConfig, secondConfig, parse) => (
+    getValue: (key, firstConfig, secondConfig, parse) => (
       {
         type: types.nested,
         children: parse(firstConfig[key], secondConfig[key]),
@@ -36,7 +36,7 @@ const propertyActions = [
   },
   {
     check: (key, firstConfig, secondConfig) => firstConfig[key] !== secondConfig[key],
-    process: (key, firstConfig, secondConfig) => ({
+    getValue: (key, firstConfig, secondConfig) => ({
       type: types.changed,
       value: {
         previous: firstConfig[key],
@@ -54,9 +54,9 @@ const parseToAST = (firstConfig, secondConfig) => {
   const keys = _.union(Object.keys(firstConfig), Object.keys(secondConfig));
 
   return keys.map((key) => {
-    const getNode = getPropertyAction(key, firstConfig, secondConfig);
+    const node = getPropertyAction(key, firstConfig, secondConfig);
 
-    return { key, ...getNode.process(key, firstConfig, secondConfig, parseToAST) };
+    return { key, ...node.getValue(key, firstConfig, secondConfig, parseToAST) };
   });
 };
 
