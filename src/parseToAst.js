@@ -6,31 +6,31 @@ const propertyActions = [
     check: (key, firstConfig, secondConfig) => !_.has(secondConfig, key),
     process: (key, firstConfig) => ({
       type: types.removed,
-      currentValue: firstConfig[key],
+      value: firstConfig[key],
     }),
   },
   {
     check: (key, firstConfig) => !_.has(firstConfig, key),
     process: (key, firstConfig, secondConfig) => ({
       type: types.added,
-      currentValue: secondConfig[key],
+      value: secondConfig[key],
     }),
   },
   {
     check: (key, firstConfig, secondConfig) => firstConfig[key] === secondConfig[key],
     process: (key, firstConfig, secondConfig) => ({
       type: types.unchanged,
-      currentValue: secondConfig[key],
+      value: secondConfig[key],
     }),
   },
   {
     check: (key, firstConfig, secondConfig) => (
       _.isObject(firstConfig[key]) && _.isObject(secondConfig[key])
     ),
-    process: (key, firstConfig, secondConfig, parseFn) => (
+    process: (key, firstConfig, secondConfig, parse) => (
       {
         type: types.nested,
-        children: parseFn(firstConfig[key], secondConfig[key]),
+        children: parse(firstConfig[key], secondConfig[key]),
       }
     ),
   },
@@ -38,8 +38,10 @@ const propertyActions = [
     check: (key, firstConfig, secondConfig) => firstConfig[key] !== secondConfig[key],
     process: (key, firstConfig, secondConfig) => ({
       type: types.changed,
-      previousValue: firstConfig[key],
-      currentValue: secondConfig[key],
+      value: {
+        previous: firstConfig[key],
+        current: secondConfig[key],
+      },
     }),
   },
 ];

@@ -12,28 +12,20 @@ const getValue = (value) => {
 };
 
 const statuses = {
-  [types.removed]: (acc, path) => [...acc, `Property '${path}' was removed`],
-  [types.added]: (acc, path, { currentValue }) => [...acc, `Property '${path}' was added with value: ${getValue(currentValue)}`],
-  [types.changed]: (acc, path, { currentValue, previousValue }) => (
-    [...acc, `Property '${path}' was updated. From ${getValue(previousValue)} to ${getValue(currentValue)}`]
+  [types.removed]: path => `Property '${path}' was removed`,
+  [types.added]: (path, { value }) => `Property '${path}' was added with value: ${getValue(value)}`,
+  [types.changed]: (path, { value }) => (
+    `Property '${path}' was updated. From ${getValue(value.previous)} to ${getValue(value.current)}`
   ),
-  [types.unchanged]: acc => acc,
-  [types.nested]: (acc, path, { children }, iterFn) => (
-    children.reduce((cAcc, cTree) => iterFn(cTree, `${path}.`, cAcc), acc)
-  ),
+  [types.nested]: (path, { children }, getDiff) => getDiff(children, `${path}.`),
 };
 
 export default (trees) => {
-  const diff = trees.reduce((acc, tree) => {
-    const iter = (iTree, changesPath, iAcc) => {
-      const { key, type } = iTree;
-      const path = `${changesPath}${key}`;
+  const getDiff = (nodes, fullPath) => (
+    nodes
+      .filter(node => node.type !== types.unchanged)
+      .reduce((acc, node) => [...acc, statuses[node.type](`${fullPath}${node.key}`, node, getDiff)], [])
+  );
 
-      return statuses[type](iAcc, path, iTree, iter);
-    };
-
-    return [...acc, iter(tree, '', [])];
-  }, []);
-
-  return _.flatten(diff).join('\n');
+  return _.flatten(getDiff(trees, '')).join('\n');
 };

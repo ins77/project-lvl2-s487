@@ -1,14 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import parsers from './parsers';
+import parseData from './parsers';
 import parseToAST from './parseToAst';
-import { formatToTree, formatToPlain, formatToJSON } from './formatters';
-
-const formatters = {
-  tree: formatToTree,
-  plain: formatToPlain,
-  json: formatToJSON,
-};
+import formatData from './formatters';
 
 export default (firstConfig, secondConfig, format = 'tree') => {
   const firstConfigPath = path.resolve(firstConfig);
@@ -16,11 +10,9 @@ export default (firstConfig, secondConfig, format = 'tree') => {
   const firstConfigInner = fs.readFileSync(firstConfigPath, 'utf8');
   const secondConfigInner = fs.readFileSync(secondConfigPath, 'utf8');
   const extension = path.extname(firstConfigPath);
-  const parseFile = parsers[extension];
-  const firstConfigObject = parseFile(firstConfigInner);
-  const secondConfigObject = parseFile(secondConfigInner);
-  const formatFn = formatters[format];
+  const firstConfigObject = parseData(extension, firstConfigInner);
+  const secondConfigObject = parseData(extension, secondConfigInner);
   const ast = parseToAST(firstConfigObject, secondConfigObject);
 
-  return formatFn(ast);
+  return formatData(format, ast);
 };

@@ -16,23 +16,17 @@ const stringify = (value, depth) => {
 };
 
 const nodes = {
-  [types.removed]: (tree, depth) => (
-    `${getTab(depth + 1)}- ${tree.key}: ${stringify(tree.currentValue, depth)}`
-  ),
-  [types.added]: (tree, depth) => (
-    `${getTab(depth + 1)}+ ${tree.key}: ${stringify(tree.currentValue, depth)}`
-  ),
-  [types.changed]: (tree, depth) => (
+  [types.removed]: ({ key, value }, depth) => `${getTab(depth + 1)}- ${key}: ${stringify(value, depth)}`,
+  [types.added]: ({ key, value }, depth) => `${getTab(depth + 1)}+ ${key}: ${stringify(value, depth)}`,
+  [types.unchanged]: ({ key, value }, depth) => `${getTab(depth + 1)}  ${key}: ${stringify(value, depth)}`,
+  [types.changed]: ({ key, value }, depth) => (
     [
-      `${getTab(depth + 1)}- ${tree.key}: ${stringify(tree.previousValue, depth)}`,
-      `${getTab(depth + 1)}+ ${tree.key}: ${stringify(tree.currentValue, depth)}`,
+      `${getTab(depth + 1)}- ${key}: ${stringify(value.previous, depth)}`,
+      `${getTab(depth + 1)}+ ${key}: ${stringify(value.current, depth)}`,
     ]
   ),
-  [types.unchanged]: (tree, depth) => (
-    `${getTab(depth + 1)}  ${tree.key}: ${stringify(tree.currentValue, depth)}`
-  ),
-  [types.nested]: (tree, depth, buildFn) => (
-    `${getTab(depth + 1)}  ${tree.key}: {\n${buildFn(tree.children, depth + 2)}\n${getTab(depth + 2)}}`
+  [types.nested]: ({ key, children }, depth, buildFn) => (
+    `${getTab(depth + 1)}  ${key}: {\n${buildFn(children, depth + 2)}\n${getTab(depth + 2)}}`
   ),
 };
 

@@ -17,7 +17,7 @@
 
 # Сравнение json-файлов в формате json
 
-<a href="https://asciinema.org/a/Qhe75Dr0AYAmXe9SOKQDZtrg0"><img src="https://asciinema.org/a/Qhe75Dr0AYAmXe9SOKQDZtrg0.png" width="500"/></a>
+<a href="https://asciinema.org/a/ZRhMucSCJkECgLMupWU2e1SUe"><img src="https://asciinema.org/a/ZRhMucSCJkECgLMupWU2e1SUe.png" width="500"/></a>
 
 # Сравнение yaml-файлов в формате дерева
 
@@ -29,7 +29,7 @@
 
 # Сравнение yaml-файлов в формате json
 
-<a href="https://asciinema.org/a/Z49m53P8dgiYbTN65jpItSxtb"><img src="https://asciinema.org/a/Z49m53P8dgiYbTN65jpItSxtb.png" width="500"/></a>
+<a href="https://asciinema.org/a/Xo76j8nyKAY4kucaSJf7AV4be"><img src="https://asciinema.org/a/Xo76j8nyKAY4kucaSJf7AV4be.png" width="500"/></a>
 
 # Сравнение ini-файлов в формате дерева
 
@@ -41,4 +41,4 @@
 
 # Сравнение ini-файлов в формате json
 
-<a href="https://asciinema.org/a/HIzYOkpgQUUg7eFHhabvwmnCi"><img src="https://asciinema.org/a/HIzYOkpgQUUg7eFHhabvwmnCi.png" width="500"/></a>
+<a href="https://asciinema.org/a/QJjRSQqpBPPahAY8Ek2jbUPww"><img src="https://asciinema.org/a/QJjRSQqpBPPahAY8Ek2jbUPww.png" width="500"/></a>
