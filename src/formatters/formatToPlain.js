@@ -24,7 +24,7 @@ export default (trees) => {
   const getDiff = (nodes, fullPath) => (
     nodes
       .filter(node => node.type !== types.unchanged)
-      .reduce((acc, node) => [...acc, statuses[node.type](`${fullPath}${node.key}`, node, getDiff)], [])
+      .map(node => statuses[node.type](`${fullPath}${node.key}`, node, getDiff))
   );
 
   return _.flatten(getDiff(trees, '')).join('\n');
