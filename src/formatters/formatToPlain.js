@@ -14,8 +14,8 @@ const getValue = (value) => {
 const statuses = {
   [types.removed]: path => `Property '${path}' was removed`,
   [types.added]: (path, { value }) => `Property '${path}' was added with value: ${getValue(value)}`,
-  [types.changed]: (path, { value }) => (
-    `Property '${path}' was updated. From ${getValue(value.previous)} to ${getValue(value.current)}`
+  [types.changed]: (path, { previousValue, currentValue }) => (
+    `Property '${path}' was updated. From ${getValue(previousValue)} to ${getValue(currentValue)}`
   ),
   [types.nested]: (path, { children }, getDiff) => getDiff(children, `${path}.`),
 };

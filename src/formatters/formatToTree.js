@@ -19,10 +19,10 @@ const nodes = {
   [types.removed]: ({ key, value }, depth) => `${getTab(depth + 1)}- ${key}: ${stringify(value, depth)}`,
   [types.added]: ({ key, value }, depth) => `${getTab(depth + 1)}+ ${key}: ${stringify(value, depth)}`,
   [types.unchanged]: ({ key, value }, depth) => `${getTab(depth + 1)}  ${key}: ${stringify(value, depth)}`,
-  [types.changed]: ({ key, value }, depth) => (
+  [types.changed]: ({ key, previousValue, currentValue }, depth) => (
     [
-      `${getTab(depth + 1)}- ${key}: ${stringify(value.previous, depth)}`,
-      `${getTab(depth + 1)}+ ${key}: ${stringify(value.current, depth)}`,
+      `${getTab(depth + 1)}- ${key}: ${stringify(previousValue, depth)}`,
+      `${getTab(depth + 1)}+ ${key}: ${stringify(currentValue, depth)}`,
     ]
   ),
   [types.nested]: ({ key, children }, depth, buildFn) => (

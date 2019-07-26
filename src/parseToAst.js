@@ -38,10 +38,8 @@ const propertyActions = [
     check: (key, firstConfig, secondConfig) => firstConfig[key] !== secondConfig[key],
     getValue: (key, firstConfig, secondConfig) => ({
       type: types.changed,
-      value: {
-        previous: firstConfig[key],
-        current: secondConfig[key],
-      },
+      previousValue: firstConfig[key],
+      currentValue: secondConfig[key],
     }),
   },
 ];

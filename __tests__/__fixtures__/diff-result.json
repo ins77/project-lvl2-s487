@@ -16,11 +16,9 @@
       {
         "key": "setting3",
         "type": "changed",
-        "value": {
-          "previous": true,
-          "current": {
-            "key": "value"
-          }
+        "previousValue": true,
+        "currentValue": {
+          "key": "value"
         }
       },
       {
@@ -65,10 +63,8 @@
       {
         "key": "baz",
         "type": "changed",
-        "value": {
-          "previous": "bas",
-          "current": "bars"
-        }
+        "previousValue": "bas",
+        "currentValue": "bars"
       },
       {
         "key": "foo",
@@ -78,12 +74,10 @@
       {
         "key": "nest",
         "type": "changed",
-        "value": {
-          "previous": {
-            "key": "value"
-          },
-          "current": "str"
-        }
+        "previousValue": {
+          "key": "value"
+        },
+        "currentValue": "str"
       }
     ]
   },
